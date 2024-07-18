@@ -35,11 +35,11 @@
   #endif
 
   // WiFi
-  const char *ssid = "whataday"; // Enter your WiFi name
-  const char *password = "wowwhataday";  // Enter WiFi password
+  const char *ssid = "ssid"; // Enter your WiFi name
+  const char *password = "password";  // Enter WiFi password
 
   // MQTT Broker
-  const char *mqtt_broker = "192.168.0.26";
+  const char *mqtt_broker = "brokerip";
   const char *pump = "cmnd/75gpumps/power";
   const char *power_head = "cmnd/75gpumps/power2";
   const char *protein_skimmer = "cmnd/75gpumps/power3";
@@ -49,8 +49,8 @@
   const char *feed = "cmnd/hass/feedmode";
   const char *hass = "cmnd/hass/hass";
   const char *atofill = "cmnd/hass/atof";
-  const char *mqtt_username = "reef";
-  const char *mqtt_password = "12433";
+  const char *mqtt_username = "username";
+  const char *mqtt_password = "password";
   const int mqtt_port = 1883;
   int buttonState = 0;
   const int buttonPin = 2;
