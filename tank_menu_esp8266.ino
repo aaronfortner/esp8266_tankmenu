@@ -33,13 +33,14 @@
   #ifdef U8X8_HAVE_HW_I2C
   #include <Wire.h>
   #endif
-
+  
+  
   // WiFi
-  const char *ssid = "ssid"; // Enter your WiFi name
-  const char *password = "password";  // Enter WiFi password
+  const char *ssid = "whataday"; // Enter your WiFi name
+  const char *password = "wowwhataday";  // Enter WiFi password
 
   // MQTT Broker
-  const char *mqtt_broker = "brokerip";
+  const char *mqtt_broker = "192.168.0.26";
   const char *pump = "cmnd/75gpumps/power";
   const char *power_head = "cmnd/75gpumps/power2";
   const char *protein_skimmer = "cmnd/75gpumps/power3";
@@ -49,15 +50,15 @@
   const char *feed = "cmnd/hass/feedmode";
   const char *hass = "cmnd/hass/hass";
   const char *atofill = "cmnd/hass/atof";
-  const char *mqtt_username = "username";
-  const char *mqtt_password = "password";
+  const char *mqtt_username = "reef";
+  const char *mqtt_password = "12433";
   const int mqtt_port = 1883;
   int buttonState = 0;
   const int buttonPin = 2;
 
   WiFiClient espClient;
   PubSubClient client(espClient);
-
+  byte buffer[30];
 // *********************************************************************
 // U8GLIB
 // *********************************************************************
@@ -246,30 +247,12 @@
   client.subscribe(hass);
 }
 void(* resetFunc) (void) = 0;//declare reset function at address 0
-void callback(char *topic, byte *payload,  unsigned int length) {
-  Serial.print("Message arrived in topic: ");
-  Serial.println(topic);
-  Serial.print("Message:");
+void callback(char* reportTopic, byte* payload, unsigned int length)
+{
+  char messageBuffer[30];  //an array to hold the payload string
+  memcpy(messageBuffer, payload, length);  //copy payload to array of chars
+  messageBuffer[length] = '\0';  //add the zero termination
   
-  for (int i = 0; i < length; i++) {
-      Serial.print((char) payload[i]);
-    
-      
-  }
-  Serial.println();
-  Serial.println("-----------------------");
-
-  if ((char)payload[0] == '1') {
-    digitalWrite(12, HIGH);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is active low on the ESP-01)
-  } else {
-    digitalWrite(12    , LOW);  // Turn the LED off by making the voltage HIGH
-    u8g2.drawStr( 0, (_LCDML_DISP_font_h * 1), "screen");
-
-  }
-
-
   
 }
 
@@ -289,6 +272,7 @@ buttonState = digitalRead(buttonPin);
     // turn LED on:
     client.publish(hass, "off");
     delay(1500);
+    
   }
    }
 
@@ -303,3 +287,4 @@ buttonState = digitalRead(buttonPin);
 # if(_LCDML_glcd_tft_box_y1 > _LCDML_glcd_tft_h)
 # error _LCDML_glcd_tft_box_y1 is to big
 # endif
+
